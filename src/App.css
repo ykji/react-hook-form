@@ -9,12 +9,14 @@ label {
   font-weight: bold;
   display: flex;
   margin-bottom: 5px;
+  margin-top: 20px;
 }
 
 input[type="text"],
 input[type="email"],
 input[type="number"],
-input[type="date"] {
+input[type="date"],
+input[type="url"] {
   display: block;
   width: 400px;
   padding: 6px 12px;
@@ -33,4 +35,10 @@ input[type="date"] {
 
 .form-control {
   margin-bottom: 20px;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+  text-align: red;
 }
