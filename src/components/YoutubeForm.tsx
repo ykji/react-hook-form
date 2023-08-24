@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 
 interface FormValues {
@@ -9,12 +9,15 @@ interface FormValues {
     github: string;
     linkedin: string;
   };
+  phoneNumbers: string[];
+  phNumbers: { number: string }[];
 }
 
 export const YouTubeForm = () => {
   const form = useForm<FormValues>({
     defaultValues: {
       username: "Yash",
+      phNumbers: [{ number: "" }],
     },
     /*
 
@@ -38,6 +41,11 @@ export const YouTubeForm = () => {
   const { errors } = formState;
 
   console.log("rendering form");
+
+  const { fields, append, remove } = useFieldArray({
+    name: "phNumbers",
+    control,
+  });
 
   const onSubmit = (data: FormValues) => {
     console.log({ ...data });
@@ -89,6 +97,35 @@ export const YouTubeForm = () => {
 
         <label htmlFor="linkedin">linkedin</label>
         <input type="url" id="linkedin" {...register("social.linkedin")} />
+
+        <label htmlFor="primary-phone">Primary phone number</label>
+        <input type="text" id="primary-phone" {...register("phoneNumbers.0")} />
+
+        <label htmlFor="secondary-phone">Secondary phone number</label>
+        <input
+          type="text"
+          id="secondary-phone"
+          {...register("phoneNumbers.1")}
+        />
+
+        <div>
+          <label htmlFor="">List of phone numbers</label>
+          <div>
+            {fields.map((field, index) => (
+              <div key={field.id}>
+                <input type="text" {...register(`phNumbers.${index}.number`)} />
+                {index > 0 && (
+                  <button type="button" onClick={() => remove(index)}>
+                    Remove
+                  </button>
+                )}
+              </div>
+            ))}
+            <button type="button" onClick={() => append({ number: "" })}>
+              Add phone number
+            </button>
+          </div>
+        </div>
 
         <button>Submit</button>
       </form>
